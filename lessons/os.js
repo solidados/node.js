@@ -43,7 +43,7 @@ if (cluster.isMaster) {
     // cluster.fork()
 
     // <- но если процесс всё же нужно остановить, то callback передаём (code, signal) и:
-    if (code ===) {
+    if (code === '--some_code') {
       cluster.fork()
     } else {
       console.log('Процесс умер и восстановлению не подлежит');
