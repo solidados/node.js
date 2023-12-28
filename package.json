@@ -5,7 +5,7 @@
   "main": "index.js",
   "tyupe": "module",
   "scripts": {
-    "start": "node ./lessons/file-system.js"
+    "start": "node ./lessons/os.js"
   },
   "keywords": [],
   "author": "",
