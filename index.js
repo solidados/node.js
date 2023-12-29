@@ -46,15 +46,15 @@ class Router {
 const router = new Router()
 
 router.get('/users', (req, res) => {
-  res.send('<h2>YOU HAVE SENT A REQUEST TO /users</h2>')
+  res.end('YOU HAVE SENT A REQUEST TO /users')
 })
 
 router.get('/posts', (req, res) => {
-  res.send('<h2>YOU HAVE SENT A REQUEST TO /posts</h2>')
+  res.end('YOU HAVE SENT A REQUEST TO /posts')
 })
 
 const server = http.createServer((req, res) => {
-
+  emitter.emit(`[${req.url}]:[${req.method}]`, req, res)
   res.end(req.url)
 })
 
