@@ -54,8 +54,11 @@ router.get('/posts', (req, res) => {
 })
 
 const server = http.createServer((req, res) => {
-  emitter.emit(`[${req.url}]:[${req.method}]`, req, res)
-  res.end(req.url)
+  const emitted = emitter.emit(`[${req.url}]:[${req.method}]`, req, res)
+
+  if (!emitted) {
+    res.end() // immediate process end fi user requested non-existing route
+  }
 })
 
 server.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`))
