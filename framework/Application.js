@@ -3,7 +3,7 @@ const EventEmitter = require('events')
 
 module.exports = class Application {
   constructor () {
-    this.emitter = {}
+    this.emitter = new EventEmitter()
     this.server = this._createServer()
   }
 
