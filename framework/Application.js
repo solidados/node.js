@@ -35,6 +35,7 @@ module.exports = class Application {
         if (body) {
           req.body = JSON.parse(body)
         }
+        // После того как закончили читать тело запроса (req.body), эмиттим соответствующее событие:
         const emitted = this.emitter.emit(this._getRouteMask(req.url, req.method), req, res)
 
         if (!emitted) {
