@@ -38,7 +38,6 @@ module.exports = class Application {
         /** Раньше этот middleware вызывался непосредственно перед вызовом handlers внутри addRouter()
          * а теперь я его перенёс для вызова непосредственно перед генерацией события: */
         this.middlewares.forEach(middleware => middleware(req, res))
-        console.log(req.pathname);
 
         // После того как закончили читать тело запроса (req.body), эмиттим соответствующее событие:
         const emitted = this.emitter.emit(this._getRouteMask(req.pathname, req.method), req, res)
