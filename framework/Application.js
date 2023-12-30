@@ -35,11 +35,16 @@ module.exports = class Application {
         if (body) {
           req.body = JSON.parse(body)
         }
+        /** Раньше этот middleware вызывался непосредственно перед вызовом handlers внутри addRouter()
+         * а теперь я его перенёс для вызова непосредственно перед генерацией события: */
+        this.middlewares.forEach(middleware => middleware(req, res))
+        console.log(req.pathname);
+
         // После того как закончили читать тело запроса (req.body), эмиттим соответствующее событие:
-        const emitted = this.emitter.emit(this._getRouteMask(req.url, req.method), req, res)
+        const emitted = this.emitter.emit(this._getRouteMask(req.pathname, req.method), req, res)
 
         if (!emitted) {
-          res.end() // immediate process end fi user requested non-existing route
+          res.end() // immediate process end if user requested non-existing route
         }
       })
     })
@@ -50,10 +55,8 @@ module.exports = class Application {
       const endpoint = router.endpoints[path]
 
       Object.keys(endpoint).forEach((method) => {
-        const handler = endpoint[method]
-
         this.emitter.on(this._getRouteMask(path, method), (req, res) => {
-          this.middlewares.forEach(middleware => middleware(req, res))
+          const handler = endpoint[method]
           handler(req, res)
         })
       })
