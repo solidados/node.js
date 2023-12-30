@@ -1,4 +1,5 @@
 const dotenv = require('dotenv')
+const mongoose = require('mongoose')
 const Application = require('./framework/Application')
 const jsonParser = require('./framework/parseJson')
 const urlParser = require('./framework/parseUrl')
@@ -16,4 +17,15 @@ app.use(urlParser(`${BASE_URL}:${PORT}`))
 
 app.addRouter(userRouter)
 
-app.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`))
+const start = async () => {
+  try {
+    await mongoose.connect()
+    app.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`))
+
+  }
+  catch (err) {
+    console.error(err.message)
+  }
+}
+
+await start();
