@@ -25,11 +25,22 @@ module.exports = class Application {
 
   _createServer () {
     return http.createServer((req, res) => {
-      const emitted = this.emitter.emit(this._getRouteMask(req.url, req.method), req, res)
+      let body = ''
 
-      if (!emitted) {
-        res.end() // immediate process end fi user requested non-existing route
-      }
+      req.on('data', (chunk) => {
+        body += chunk
+      })
+
+      req.on('end', () => {
+        if (body) {
+          req.body = JSON.parse(body)
+        }
+        const emitted = this.emitter.emit(this._getRouteMask(req.url, req.method), req, res)
+
+        if (!emitted) {
+          res.end() // immediate process end fi user requested non-existing route
+        }
+      })
     })
   }
 
